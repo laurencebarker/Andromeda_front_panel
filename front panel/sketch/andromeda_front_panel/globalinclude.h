@@ -14,15 +14,18 @@
 // define V2HARDWARE to compile for Kjell's Andromeda early prototype PCB
 // design proving initally using Odin software
 //
-//#define V2HARDWARE 1
+#define V2HARDWARE 1
 
 //
 // define V3HARDWARE to compile for Kjell's final Andromeda prototype PCB
 // design proving initally using Odin software
 //
-#define V3HARDWARE 1
+//#define V3HARDWARE 1
 
-
+//
+// software version: send back to console on request
+//
+#define SWVERSION 4
 
 
 #endif      // file sentry

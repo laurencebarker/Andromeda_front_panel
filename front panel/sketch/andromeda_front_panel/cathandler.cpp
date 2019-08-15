@@ -88,14 +88,16 @@ void CATHandleEncoder(int Encoder, int Clicks)
 
 //
 // pushbutton: set pressed or unpressed state
-// Button number internally is 0-(N-1) in normal C style
+// Button number internally is 0..(N-1) in normal C style
 //
-void CATHandlePushbutton(int Button, bool IsPressed)
+void CATHandlePushbutton(int Button, bool IsPressed, bool IsLongPressed)
 {
   int Param;
 
-  Param = (Button + 1) * 10;                // get to param if unpressed
-  if (IsPressed)
+  Param = (Button) * 10;                // get to param if unpressed
+  if (IsLongPressed)
+    Param += 2;
+  else if (IsPressed)
     Param += 1;
   MakeCATMessageNumeric(eZZZP, Param);
 }
@@ -108,9 +110,9 @@ void CATHandlePushbutton(int Button, bool IsPressed)
 void MakeHardwareVersionMessage(void)
 {
 #if defined V2HARDWARE
-  MakeCATMessageNumeric(eZZZH,0);
+  MakeCATMessageNumeric(eZZZH,2);
 #elif defined V3HARDWARE
-  MakeCATMessageNumeric(eZZZH,1);
+  MakeCATMessageNumeric(eZZZH,3);
 #endif
 }
 
@@ -120,7 +122,10 @@ void MakeHardwareVersionMessage(void)
 //
 void MakeSoftwareVersionMessage(void)
 {
-  MakeCATMessageNumeric(eZZZS,1);
+  int Version;
+
+  Version = SWVERSION;
+  MakeCATMessageNumeric(eZZZS,Version);
 }
 
 

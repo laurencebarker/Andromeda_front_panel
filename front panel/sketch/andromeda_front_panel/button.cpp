@@ -142,7 +142,7 @@ void GButtonInitialise(void)
 #ifdef V3HARDWARE
 int ReportCodeLookup[] = 
 {
-  6,      // scan code 0
+  11,      // scan code 0
   21,
   22,
   23,
@@ -150,8 +150,8 @@ int ReportCodeLookup[] =
   25,
   1, 
   26, 
-  3,
-  4, 
+  5,
+  7, 
   29,     // scan code 10
   30,
   31,
@@ -159,7 +159,7 @@ int ReportCodeLookup[] =
   33,
   34,
   27,
-  2,
+  3,
   35,
   36,
   37,     // scan code 20
@@ -169,7 +169,7 @@ int ReportCodeLookup[] =
   41,
   42,
   43,
-  5,
+  9,
   44,
   45,
   46,     // scan code 30
@@ -190,8 +190,8 @@ int ReportCodeLookup[] =
   25,
   1,
   30,
-  3,
-  4,
+  5,
+  7,
   31,     // scan code 10
   32,
   33,
@@ -199,7 +199,7 @@ int ReportCodeLookup[] =
   35,
   36,
   37,
-  2,
+  3,
   38,
   39,
   40,     // scan code 20
@@ -207,9 +207,9 @@ int ReportCodeLookup[] =
   42,
   43,
   44,
-  5,
-  6,
-  7,
+  9,
+  11,
+  13,
   45,
   46,
   26,     // scan code 30
@@ -232,7 +232,7 @@ void ButtonPressed(int ButtonNum)
   GButtonPressed[ButtonNum] = true;
   ButtonCode = ReportCodeLookup[ButtonNum];
   if (ButtonCode != 0)
-    CATHandlePushbutton(ButtonCode, true); 
+    CATHandlePushbutton(ButtonCode, true, false); 
 }
 
 
@@ -248,7 +248,7 @@ void ButtonReleased(int ButtonNum)
   GButtonPressed[ButtonNum] = false;
   ButtonCode = ReportCodeLookup[ButtonNum];
   if (ButtonCode != 0)
-    CATHandlePushbutton(ButtonCode, false); 
+    CATHandlePushbutton(ButtonCode, false, false); 
 }
 
 

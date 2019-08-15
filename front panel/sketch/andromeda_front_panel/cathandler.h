@@ -22,7 +22,7 @@ void CATHandleVFOEncoder(int Clicks);
 
 void CATHandleEncoder(int Encoder, int Clicks);
 
-void CATHandlePushbutton(int Button, bool IsPressed);
+void CATHandlePushbutton(int Button, bool IsPressed, bool IsLongPressed);
 
 
 
