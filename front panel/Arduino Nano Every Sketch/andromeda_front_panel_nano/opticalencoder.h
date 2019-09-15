@@ -3,6 +3,8 @@
 // opticalencoder.cpp
 // this is an interrupt driven optical encoder driver written for
 // the new Arduino Nano Every processor
+// copyright (c) Laurence Barker G8NJJ 2019
+//
 // the encoder is attached to D0 and D1 (PC04, PC05)
 // and PORTC pin change will need to be enabled. 
 /////////////////////////////////////////////////////////////////////////

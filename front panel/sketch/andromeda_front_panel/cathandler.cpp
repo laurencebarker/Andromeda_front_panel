@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////////////////////
 //
 // Andromeda front panel controller by Laurence Barker G8NJJ
-//
 // this sketch provides a knob and switch interface through USB and CAT
+// copyright (c) Laurence Barker G8NJJ 2019
 //
 // CAT handler.cpp
 // this file holds the CAT handling code

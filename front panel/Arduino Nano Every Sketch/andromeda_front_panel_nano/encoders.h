@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////////////////////
 //
 // Andromeda front panel controller by Laurence Barker G8NJJ
-//
 // this sketch provides a knob and switch interface through USB and CAT
+// copyright (c) Laurence Barker G8NJJ 2019
 //
 // encoders.h
 // this file holds the code to manage the rotary encoders

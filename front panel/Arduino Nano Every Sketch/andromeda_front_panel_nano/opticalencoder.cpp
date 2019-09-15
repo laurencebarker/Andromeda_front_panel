@@ -3,6 +3,8 @@
 // opticalencoder.cpp
 // this is an interrupt driven optical encoder driver written for
 // the new Arduino Nano Every processor ATMEGA4809. 
+// copyright (c) Laurence Barker G8NJJ 2019
+//
 // See "iom4809.h" for register definitions, bit maps etc
 //
 // the encoder is attached to D0 and D1 (PC04, PC05)

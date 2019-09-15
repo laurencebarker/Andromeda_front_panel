@@ -1,8 +1,9 @@
 /////////////////////////////////////////////////////////////////////////
 //
 // Andromeda front panel controller sketch by Laurence Barker G8NJJ
-//
 // this sketch provides a knob and switch interface through USB and CAT
+// copyright (c) Laurence Barker G8NJJ 2019
+//
 // the code is written for an Arduino Due module
 //
 // "main" file with setup() and loop()
