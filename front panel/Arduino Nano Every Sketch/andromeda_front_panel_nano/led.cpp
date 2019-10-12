@@ -13,9 +13,19 @@
 #include "led.h"
 #include "iopins.h"
 #include "types.h"
+#include "configdata.h"
+#include "button.h"
 
 byte I2CLEDBits;                  // 3 bits data for LEDs, in bits 2:0 (init to zero by button.cpp)
 #define VLEDBITMASK 0b00000111    // bit mask for LED bits that are allowed to be set
+#define VBRIGHTNESSWRITEBACKCOUNT 2500          // 5 seconds (2500 x 2ms ticks)
+
+//
+// PWM output for PC LCD brightness control
+//
+byte GDisplayBrightness;                               // brightness value (0 to 255)
+int GBrightCounter;
+
 
 //
 // struct to hold an LED definition
@@ -40,7 +50,6 @@ LEDType LEDPinList[] =
   {VPININDICATOR6, false},
   {VPININDICATOR7, false},
   {VPININDICATOR8, false},
-  {VPININDICATOR9, false},
   {0, true},
   {1, true},
   {2, true}
@@ -89,4 +98,43 @@ void ClearLEDs(void)
 
   for (Cntr = 0; Cntr < VMAXINDICATORS; Cntr++)
     SetLED(Cntr, false);
+}
+
+
+
+
+//
+// PWMTick: see if we need to write new value to EEPROM
+//
+void PWMTick(void)
+{
+  if (GBrightCounter!= 0)                 // only do anything if counting down
+    if(--GBrightCounter == 0)
+      EEWriteBrightness(GDisplayBrightness);
+}
+
+
+//
+// PWM initialise: load setting from EEPROM to output pin
+//
+void PWMInitialise(void)
+{
+  analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
+}
+
+
+//
+// PWM brightness update
+// change current PWM brightness by the number of steps passed in
+// called if the correct encoder is turned; check the right button pressed too!
+//
+void PWMUpdate(signed char Steps)
+{
+  if(IsPWMButtonPressed())
+  {
+    GDisplayBrightness += Steps;
+    GDisplayBrightness = constrain(GDisplayBrightness, 0, 255);
+    analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
+    GBrightCounter = VBRIGHTNESSWRITEBACKCOUNT;             // delay till we write it to EEPROM
+  }
 }

@@ -27,5 +27,11 @@
 //
 #define SWVERSION 4
 
+//
+// product iD: send back to console on request
+// 1=Andromeda front panel
+// 2 = Aries ATU
+//
+#define PRODUCTID 1
 
 #endif      // file sentry

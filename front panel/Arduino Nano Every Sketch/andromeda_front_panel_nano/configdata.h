@@ -39,5 +39,9 @@ void LoadSettingsFromEEprom(void);
 //
 void CheckEEpromInitialised(void);
 
+//
+// function to write new brightness
+//
+void EEWriteBrightness(byte Value);
 
 #endif  //not defined

@@ -14,9 +14,15 @@
 //
 // define the numbers of controls available
 //
-#define VMAXINDICATORS 12
-#define VMAXENCODERS 10             // configurable, not including VFO
-#define VMAXBUTTONS 33
+#define VMAXINDICATORS 11
+#define VMAXENCODERS 12             // configurable, not including VFO
+#define VMAXBUTTONS 34
+
+//
+// ID of encoder and pushbutton that operate PWM if the button pressed
+//
+#define VPWMENCODER 0               // encoder 1
+#define VPWMSCANCODE 10             // encoder 1 press
 
 
 #endif //not defined

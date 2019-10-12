@@ -26,6 +26,7 @@ enum ECATCommands
   eZZZI,                          // indicator
   eZZZS,                          // s/w version
   eZZZH,                          // h/w version
+  eZZZT,                          // product version
   eNoCommand                      // this is an exception condition
 };
 

@@ -53,17 +53,18 @@ long DivisorTable[] =
 // array of records. This must exactly match the enum ECATCommands in tiger.h
 // and the number of commands defined here must be correct
 // (not including the final eNoCommand)
-#define VNUMCATCMDS 7
+#define VNUMCATCMDS 8
 
 SCATCommands GCATCommands[VNUMCATCMDS] = 
 {
   {"ZZZD", eNum, 0, 99, 2, false},                         // VFO down
   {"ZZZU", eNum, 0, 99, 2, false},                         // VFO up
-  {"ZZZE", eNum, 0, 999, 3, false},                         // encoder
-  {"ZZZP", eNum, 0, 999, 3, false},                           // pushbutton
-  {"ZZZI", eNum, 0, 999, 3, false},                           // indicator
-  {"ZZZS", eNum, 0, 999, 3, false},                       // s/w version
-  {"ZZZH", eNum, 0, 99, 2, false},                       // h/w version
+  {"ZZZE", eNum, 0, 999, 3, false},                        // encoder
+  {"ZZZP", eNum, 0, 999, 3, false},                        // pushbutton
+  {"ZZZI", eNum, 0, 999, 3, false},                        // indicator
+  {"ZZZS", eNum, 0, 999, 3, false},                        // s/w version
+  {"ZZZH", eNum, 0, 99, 2, false},                         // h/w version
+  {"ZZZT", eNum, 0, 99, 2, false}                          // product version
 };
 
 

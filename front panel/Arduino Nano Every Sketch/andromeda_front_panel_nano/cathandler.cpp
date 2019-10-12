@@ -18,7 +18,6 @@
 #include <stdlib.h>
 
 
-
 //
 // clip to numerical limits allowed for a given message type
 //
@@ -54,7 +53,6 @@ void CATHandleVFOEncoder(signed char Clicks)
       MakeCATMessageNumeric(eZZZU, Clicks);
   }
 }
-
 
 
 //
@@ -109,7 +107,10 @@ void CATHandlePushbutton(byte Button, bool IsPressed, bool IsLongPressed)
 //
 void MakeHardwareVersionMessage(void)
 {
-  MakeCATMessageNumeric(eZZZH,1);
+  int Version;
+
+  Version = HWVERSION;
+  MakeCATMessageNumeric(eZZZH,Version);
 }
 
 
@@ -122,6 +123,18 @@ void MakeSoftwareVersionMessage(void)
 
   Version = SWVERSION;
   MakeCATMessageNumeric(eZZZS,Version);
+}
+
+
+//
+// function to send back a product ID message
+//
+void MakeProductIDMessage(void)
+{
+  int Version;
+
+  Version = PRODUCTID;
+  MakeCATMessageNumeric(eZZZT,Version);
 }
 
 
@@ -191,6 +204,10 @@ void HandleCATCommandNoParam(ECATCommands MatchedCAT)
       MakeSoftwareVersionMessage();
       break;
 
+    case eZZZT:                                                       // RX2 stereo balance
+      MakeProductIDMessage();
+      break;
+    
     case eZZZX:                                                       // encoder increment reply
       MakeEncoderIncrementMessage();
       break;

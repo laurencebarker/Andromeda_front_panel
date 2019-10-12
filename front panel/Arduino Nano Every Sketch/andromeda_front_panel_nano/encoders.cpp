@@ -23,6 +23,7 @@
 #include "cathandler.h"
 #include "tiger.h"
 #include "button.h"
+#include "led.h"
 #include <Wire.h>
 
 
@@ -49,6 +50,8 @@ byte GVFOCycleCount;                                     // remaining ticks unti
 //    8      7
 //    9      8
 //    10     9
+//    11     10
+//    12     11
 
 
 //
@@ -56,7 +59,7 @@ byte GVFOCycleCount;                                     // remaining ticks unti
 //
 
 //
-// 8 encoders: one VFO (fast) encoder and 7 "normal" ones 
+// 13 encoders: one VFO (fast) encoder and 12 "normal" ones 
 //
 //Encoder VFOEncoder(VPINVFOENCODERA, VPINVFOENCODERB);
 
@@ -103,8 +106,8 @@ unsigned int ReadEncoderMCP(void)
 
 
 //
-// function to read encoders 9, 10
-// returns encoder 10 in bits 3:2, encoder 1 in bits 1:0
+// function to read encoders 9-12
+// returns encoder 12:(bits 7:6) 11:(bits 5:4) 10:(bits 3:2) 9:(bits 1:0) 
 //
 byte ReadDirectWiredEncoders(void)
 {
@@ -117,6 +120,14 @@ byte ReadDirectWiredEncoders(void)
     Result |= 0b100;
   if(digitalRead(VPINENCODER10B))
     Result |= 0b1000;
+  if(digitalRead(VPINENCODER11A))
+    Result |= 0b10000;
+  if(digitalRead(VPINENCODER11B))
+    Result |= 0b100000;
+  if(digitalRead(VPINENCODER12A))
+    Result |= 0b1000000;
+  if(digitalRead(VPINENCODER12B))
+    Result |= 0b10000000;
 
   return Result;
 }
@@ -131,7 +142,7 @@ byte ReadDirectWiredEncoders(void)
 void InitEncoders(void)
 {
   unsigned int EncoderValues;                   // encoder 1-8 values
-  byte Encoder9_10;
+  byte Encoder9_12;
   byte BitState;                                // 2 bits setting of one encoder                 
 
   GVFOCycleCount = VVFOCYCLECOUNT;              // tick count
@@ -141,7 +152,7 @@ void InitEncoders(void)
   WriteMCPRegister(VMCPENCODERADDR, VGPPUA, 0xFF);                     // make row inputs have pullup resistors
   WriteMCPRegister(VMCPENCODERADDR, VGPPUB, 0xFF);                     // make row inputs have pullup resistors
 
-  Encoder9_10 = ReadDirectWiredEncoders();      // read encoders that are direct wired
+  Encoder9_12 = ReadDirectWiredEncoders();      // read encoders that are direct wired
   EncoderValues = ReadEncoderMCP();             // read 16 bit encoder values
   
   BitState = (byte)(EncoderValues & 0b11);      // take bottom 2 bits
@@ -175,11 +186,20 @@ void InitEncoders(void)
   BitState = (byte)(EncoderValues & 0b11);      // take bottom 2 bits
   EncoderList[4].Ptr = new NoClickEncoder2(GMechEncoderDivisor, BitState, true);
 
-  BitState = Encoder9_10 & 0b11;
-  Encoder9_10 = Encoder9_10 >> 2;
+  BitState = Encoder9_12 & 0b11;
   EncoderList[8].Ptr = new NoClickEncoder2(GMechEncoderDivisor, BitState, true);
-  BitState = Encoder9_10 & 0b11;
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  BitState = Encoder9_12 & 0b11;
   EncoderList[9].Ptr = new NoClickEncoder2(GMechEncoderDivisor, BitState, true);
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  BitState = Encoder9_12 & 0b11;
+  EncoderList[10].Ptr = new NoClickEncoder2(GMechEncoderDivisor, BitState, true);
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  BitState = Encoder9_12 & 0b11;
+  EncoderList[11].Ptr = new NoClickEncoder2(GMechEncoderDivisor, BitState, true);
 
   InitOpticalEncoder();
 }
@@ -193,10 +213,10 @@ void InitEncoders(void)
 void EncoderTick(void)
 {
   unsigned int EncoderValues;
-  byte Encoder9_10;
+  byte Encoder9_12;
   
   EncoderValues = ReadEncoderMCP();             // read 16 bit encoder values
-  Encoder9_10 = ReadDirectWiredEncoders();      // read encoders that are direct wired
+  Encoder9_12 = ReadDirectWiredEncoders();      // read encoders that are direct wired
   
   EncoderList[3].Ptr->service((byte)(EncoderValues & 0b11));
   EncoderValues = EncoderValues >> 2;
@@ -221,9 +241,16 @@ void EncoderTick(void)
  
   EncoderList[4].Ptr->service((byte)(EncoderValues & 0b11));
 
-  EncoderList[8].Ptr->service(Encoder9_10 & 0b11);      // feed encoder 9 with bottom bits
-  Encoder9_10 = Encoder9_10 >> 2;
-  EncoderList[9].Ptr->service(Encoder9_10 & 0b11);      // feed encoder 10 with bits 2,3
+  EncoderList[8].Ptr->service(Encoder9_12 & 0b11);      // feed encoder 9 with bottom bits
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  EncoderList[9].Ptr->service(Encoder9_12 & 0b11);      // feed encoder 10 with bits 2,3
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  EncoderList[10].Ptr->service(Encoder9_12 & 0b11);     // feed encoder 11 with bits 4,5
+
+  Encoder9_12 = Encoder9_12 >> 2;
+  EncoderList[11].Ptr->service(Encoder9_12 & 0b11);     // feed encoder 12 with bits 6,7
 
   int16_t Movement;                                         // normal encoder movement since last update
   byte Cntr;                                                // count encoders
@@ -235,6 +262,8 @@ void EncoderTick(void)
     {
       EncoderList[Cntr].LastPosition += Movement;
       CATHandleEncoder(Cntr, Movement);
+      if (Cntr == VPWMENCODER)                              // if encoder for PWM change
+        PWMUpdate(Movement);
     }
   }
 

@@ -11,21 +11,26 @@
 #include <Arduino.h>
 #include "globalinclude.h"
 #include "encoders.h"
+#include "led.h"
 
 #include "types.h"
 #include <EEPROM.h>
 
-#define VEEINITPATTERN 0x6E                    // addr 0 set to this if configured
+#define VEEINITPATTERN 0x6F                     // addr 0 set to this if configured
+#define VBRIGHTNESSADDR 3                       // address in EEPROM for brightness setting
 
 byte GEncoderDivisor;                                // number of edge events per declared click
 byte GVFOEncoderDivisor;                             // number of edge events per declared click
 
 
 
-
 //
 // function to copy all config settings to EEprom
 // this copies the current RAM vaiables to the persistent storage
+// addr 0: defined pattern (to know EEPROM has been initialised)
+// addr 1: normal encoder events per step
+// addr 2: VFO encoder events per steo
+// addr 3: display brightness
 //
 void CopySettingsToEEprom(void)
 {
@@ -44,6 +49,8 @@ void CopySettingsToEEprom(void)
   EEPROM.write(Addr++, Setting);
   Setting = (byte) GVFOEncoderDivisor;
   EEPROM.write(Addr++, Setting);
+  Setting = (byte) GDisplayBrightness;
+  EEPROM.write(Addr++, Setting);
 }
 
 
@@ -57,8 +64,9 @@ void InitialiseEEprom(void)
 {
   int Cntr;
   
-  GEncoderDivisor = 2;
-  GVFOEncoderDivisor = 1;
+  GEncoderDivisor = 2;                          // OK for the dual shaft encoders
+  GVFOEncoderDivisor = 1;                       // max turn rate for Briadcom encoder (set to 4 for larger optical one)
+  GDisplayBrightness = 128;                     // half brightness
  
 // now copy them to FLASH
   CopySettingsToEEprom();
@@ -88,4 +96,14 @@ void LoadSettingsFromEEprom(void)
   GEncoderDivisor = (byte)EEPROM.read(Addr++);
   GVFOEncoderDivisor = (byte)EEPROM.read(Addr++);
   SetEncoderDivisors(GEncoderDivisor, GVFOEncoderDivisor);
+  GDisplayBrightness = (byte)EEPROM.read(Addr++);
+}
+
+
+//
+// function to write new brightness
+//
+void EEWriteBrightness(byte Value)
+{
+  EEPROM.write(VBRIGHTNESSADDR, Value);
 }

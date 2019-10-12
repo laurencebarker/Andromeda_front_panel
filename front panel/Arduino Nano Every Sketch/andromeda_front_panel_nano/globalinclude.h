@@ -12,9 +12,17 @@
 
 
 //
-// software version: send back to console on request
+// hardware and software version: send back to console on request
 //
 #define SWVERSION 5
+#define HWVERSION 1
+
+//
+// product iD: send back to console on request
+// 1=Andromeda front panel
+// 2 = Aries ATU
+//
+#define PRODUCTID 1
 
 
 #endif      // file sentry

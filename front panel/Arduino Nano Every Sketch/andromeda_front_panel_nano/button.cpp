@@ -72,7 +72,7 @@ byte ReadPushbuttonRowMCP(void)
   Wire.beginTransmission(VMCPMATRIXADDR);
   Wire.write(VGPIOBADDR);                               // point to GPIOB register
   Wire.endTransmission();
-  Wire.requestFrom(VMCPMATRIXADDR, 1);                      // read 1 byte
+  Wire.requestFrom(VMCPMATRIXADDR, 1);                  // read 1 byte
   Input=Wire.read();                                    // GPIOB
   return Input;
 }
@@ -257,7 +257,7 @@ void ButtonReleased()
 }
 
 
-#define VDEBOUNCETICKS 5
+#define VDEBOUNCETICKS 10
 
 //
 // Tick
@@ -361,4 +361,17 @@ void ButtonTick(void)
         break;
     }
   }
+}
+
+//
+// code to test if the pushbutton for the PWM brightness control is pressed
+// this uses hardware scan code not s/w code for button
+//
+bool IsPWMButtonPressed(void)
+{
+  bool Result = false;
+  if (GScanState == eButtonPressed)
+    if (GetScanCode() == VPWMSCANCODE)
+      Result = true;
+  return Result;
 }

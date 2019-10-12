@@ -128,7 +128,16 @@ void MakeSoftwareVersionMessage(void)
   MakeCATMessageNumeric(eZZZS,Version);
 }
 
+//
+// function to send back a product ID message
+//
+void MakeProductIDMessage(void)
+{
+  int Version;
 
+  Version = PRODUCTID;
+  MakeCATMessageNumeric(eZZZT,Version);
+}
 
 
 //
@@ -163,6 +172,10 @@ void HandleCATCommandNoParam(ECATCommands MatchedCAT)
 
     case eZZZS:                                                       // RX2 stereo balance
       MakeSoftwareVersionMessage();
+      break;
+
+    case eZZZT:                                                       // RX2 stereo balance
+      MakeProductIDMessage();
       break;
   }
 }

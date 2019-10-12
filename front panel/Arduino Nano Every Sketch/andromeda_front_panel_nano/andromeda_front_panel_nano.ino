@@ -18,6 +18,7 @@
 #include "button.h"
 #include "encoders.h"
 #include "tiger.h"
+#include "led.h"
 #include "cathandler.h"
 
 
@@ -55,6 +56,7 @@ void setup()
 // check that the flash is programmed, then load to RAM
 //  
   LoadSettingsFromEEprom();
+  PWMInitialise();
 
 //
 // initialise timer to give 2ms tick interrupt
@@ -120,6 +122,11 @@ void loop()
 // look for any CAT commands in the serial input buffer and process them
 //    
     ScanParseSerial();
+//
+// check if we need to write brightness value back to EEPROM
+//
+    PWMTick();                                    // display brightness checks
+    
 // 
 // last action - drive the new switch matrix column output
 //
@@ -141,10 +148,7 @@ void ConfigIOPins(void)
   pinMode(VPININDICATOR6, OUTPUT);                      // LED indicator
   pinMode(VPININDICATOR7, OUTPUT);                      // LED indicator
   pinMode(VPININDICATOR8, OUTPUT);                      // LED indicator
-  pinMode(VPININDICATOR9, OUTPUT);                      // LED indicator
-  pinMode(VPININDICATOR10, OUTPUT);                      // LED indicator
-  pinMode(VPININDICATOR11, OUTPUT);                      // LED indicator
-  pinMode(VPININDICATOR12, OUTPUT);                      // LED indicator
+  pinMode(VPINDISPLAYPWM, OUTPUT);                      // display brightness
   digitalWrite(VPININDICATOR1, LOW);                    // LED indicator
   digitalWrite(VPININDICATOR2, LOW);                    // LED indicator
   digitalWrite(VPININDICATOR3, LOW);                    // LED indicator
@@ -153,13 +157,14 @@ void ConfigIOPins(void)
   digitalWrite(VPININDICATOR6, LOW);                    // LED indicator
   digitalWrite(VPININDICATOR7, LOW);                    // LED indicator
   digitalWrite(VPININDICATOR8, LOW);                    // LED indicator
-  digitalWrite(VPININDICATOR9, LOW);                    // LED indicator
-  digitalWrite(VPININDICATOR10, LOW);                    // LED indicator
-  digitalWrite(VPININDICATOR11, LOW);                    // LED indicator
-  digitalWrite(VPININDICATOR12, LOW);                    // LED indicator
+  digitalWrite(VPINDISPLAYPWM, LOW);                    // display brightness
 
   pinMode(VPINENCODER9A, INPUT_PULLUP);                 // normal encoder
   pinMode(VPINENCODER9B, INPUT_PULLUP);                 // normal encoder
   pinMode(VPINENCODER10A, INPUT_PULLUP);                // normal encoder
   pinMode(VPINENCODER10B, INPUT_PULLUP);                // normal encoder
+  pinMode(VPINENCODER11A, INPUT_PULLUP);                // normal encoder
+  pinMode(VPINENCODER11B, INPUT_PULLUP);                // normal encoder
+  pinMode(VPINENCODER12A, INPUT_PULLUP);                // normal encoder
+  pinMode(VPINENCODER12B, INPUT_PULLUP);                // normal encoder
 }

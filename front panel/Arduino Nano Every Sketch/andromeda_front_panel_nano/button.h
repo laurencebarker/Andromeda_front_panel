@@ -38,5 +38,10 @@ void AssertMatrixColumn(void);
 //
 void WriteMCPRegister(byte ChipAddress, byte Address, byte Value);
 
+//
+// code to test if the pushbutton for the PWM brightness control is pressed
+// this uses hardware scan code not s/w code for button
+//
+bool IsPWMButtonPressed(void);
 
 #endif //not defined

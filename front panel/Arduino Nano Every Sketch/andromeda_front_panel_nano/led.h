@@ -15,6 +15,7 @@
 
 // declare extern variables
 extern byte I2CLEDBits;                  // 3 bits data for LEDs, in bits 2:0
+extern byte GDisplayBrightness;          // brightness value (0 to 255)
 
 
 //
@@ -28,6 +29,25 @@ void SetLED(byte LEDNumber, bool State);
 // clear all LEDs
 //
 void ClearLEDs(void);
+
+
+//
+// PWM initialise: load setting from EEPROM to output pin
+//
+void PWMInitialise(void);
+
+
+//
+// PWMTick: see if we need to write new value to EEPROM
+//
+void PWMTick(void);
+
+
+//
+// PWM brightness update
+// change current PWM brightness by the number of steps passed in
+//
+void PWMUpdate(signed char Steps);
 
 
 #endif //#ifndef
