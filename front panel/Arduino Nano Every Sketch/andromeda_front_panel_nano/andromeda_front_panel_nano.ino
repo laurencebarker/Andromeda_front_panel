@@ -100,7 +100,6 @@ void loop()
 {
   while (GTickTriggered)
   {
-    digitalWrite(6, HIGH);      // DEBUG
     GTickTriggered = false;
     ButtonTick();
 // heartbeat LED
@@ -131,7 +130,6 @@ void loop()
 // last action - drive the new switch matrix column output
 //
     AssertMatrixColumn();
-    digitalWrite(6, LOW);      // DEBUG
   }
 }
 

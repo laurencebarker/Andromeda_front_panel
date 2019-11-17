@@ -112,21 +112,21 @@ unsigned int ReadEncoderMCP(void)
 byte ReadDirectWiredEncoders(void)
 {
   byte Result = 0;
-  if(digitalRead(VPINENCODER9A))
-    Result |= 0b1;
   if(digitalRead(VPINENCODER9B))
+    Result |= 0b1;
+  if(digitalRead(VPINENCODER9A))
     Result |= 0b10;
-  if(digitalRead(VPINENCODER10A))
-    Result |= 0b100;
   if(digitalRead(VPINENCODER10B))
+    Result |= 0b100;
+  if(digitalRead(VPINENCODER10A))
     Result |= 0b1000;
-  if(digitalRead(VPINENCODER11A))
-    Result |= 0b10000;
   if(digitalRead(VPINENCODER11B))
+    Result |= 0b10000;
+  if(digitalRead(VPINENCODER11A))
     Result |= 0b100000;
-  if(digitalRead(VPINENCODER12A))
-    Result |= 0b1000000;
   if(digitalRead(VPINENCODER12B))
+    Result |= 0b1000000;
+  if(digitalRead(VPINENCODER12A))
     Result |= 0b10000000;
 
   return Result;

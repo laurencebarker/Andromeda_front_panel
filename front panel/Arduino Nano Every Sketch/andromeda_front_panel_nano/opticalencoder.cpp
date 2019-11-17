@@ -15,6 +15,7 @@
 #include "opticalencoder.h"
 #include "iopins.h"
 
+#define VSWAPDIRECTION 1                    // if set, reverses direction
 
 
 // global variables
@@ -79,7 +80,11 @@ ISR(PORTC_PORT_vect)
   PORTC.INTFLAGS = 0b00110000;                            // clear interrupt flags
   GPinState = (GPinState >> 2) | InputValue;              // now have new bits in 3:2, old bits in 1:0
   Increment = StepsLookup[GPinState];
+#ifdef VSWAPDIRECTION
+  GDeltaCount -= Increment;
+#else
   GDeltaCount += Increment;
+#endif
 }
 
 

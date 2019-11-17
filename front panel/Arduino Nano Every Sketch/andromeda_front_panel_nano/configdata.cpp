@@ -65,7 +65,7 @@ void InitialiseEEprom(void)
   int Cntr;
   
   GEncoderDivisor = 2;                          // OK for the dual shaft encoders
-  GVFOEncoderDivisor = 1;                       // max turn rate for Briadcom encoder (set to 4 for larger optical one)
+  GVFOEncoderDivisor = 1;                       // max turn rate for Broadcom encoder (set to 4 for larger optical one)
   GDisplayBrightness = 128;                     // half brightness
  
 // now copy them to FLASH

@@ -156,46 +156,51 @@ void GButtonInitialise(void)
 
 //
 // arrays to look up the report code from the software scan code
-// s/w scan code begins 0
+// s/w scan code begins 0 and this table must have the full 5*8 entries
 // reported code begins 1-7 (encoders) then 21-49 (pushbuttons)
 //
 int ReportCodeLookup[] = 
 {
-  11,      // scan code 0
-  21,
+  21,      // scan code 0
   22,
   23,
   24,
   25,
-  1, 
-  26, 
-  5,
-  7, 
-  29,     // scan code 10
-  30,
-  31,
-  32,
-  33,
-  34,
-  27,
-  3,
-  35,
-  36,
-  37,     // scan code 20
-  38,
-  39,
-  40,
-  41,
-  42,
-  43,
-  9,
-  44,
-  45,
-  46,     // scan code 30
-  47, 
+  26,
+  27, 
+  28, 
+  11,
+  3, 
+  1,     // scan code 10
+  50,
+  49,
   48,
+  47,
+  46,
+  40,
+  37,
+  34,
+  31,
+  39,     // scan code 20
+  36,
+  33,
+  30,
+  45,
+  44,
+  43,
+  42,
+  41,
+  38,
+  35,     // scan code 30
+  32, 
   0,
-  49
+  0,
+  0,
+  0,
+  29,
+  9,
+  7,
+  5       // scan code 39
 };
 
 
@@ -233,6 +238,8 @@ void ButtonPressed()
     ButtonCode = ReportCodeLookup[ScanCode];
     if (ButtonCode != 0)
       CATHandlePushbutton(ButtonCode, true, false); 
+    Serial.print(" Scan code=");
+    Serial.println(ScanCode);
   }
 }
 

@@ -1,10 +1,6 @@
-This is the repository for the Andromeda front panel
+This is part of the repository for the Andromeda front panel
 
-It includes an Arduino sketch for the Andromeda front panel controller. The newest code and hardware is written for an Arduino Nano Every board.
-
-There are two sketches here:
-1. The new, intended front panel controller
-2. an interim one, based on Odin code using CAT commands
+This folder is an obsolete Arduino sketch for the Andromeda front panel controller using an Arduino Due processor . The newest code and hardware is written for an Arduino Nano Every board.
 
 
 
@@ -29,7 +25,7 @@ DueFlashStorage:
 Encoder: 
 1. open the Arduino IDE
 2. click "Sketch | Include Library | Manage libraries..." on the menu
-3. in the library manager type "encoder" where it sayds "filter your search" and hit enter
+3. in the library manager type "encoder" where it says "filter your search" and hit enter
 4. find "encoder" by Paul Stoffregen and click "install"
 
 Due Timer:
@@ -42,7 +38,7 @@ Due Timer:
 
 Downloading the Andromeda software repository
 ========================================
-1. download the repository from "https://github.com/laurencebarker/odin-SDR-console"
+1. download the repository from "https://github.com/laurencebarker/Andromeda_front_panel"
 2. you will get a zip file; unzip it into a folder on your computer - for example "documents\sdr"
 3. At that point you will have a folder "documents\sdr\andromeda-front-panel-master"
 5. To open the Andromeda software sketch:
