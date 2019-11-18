@@ -30,21 +30,21 @@ byte GNumCommands;                                      // number of commands in
 //
 long DivisorTable[] =
 {
-  0,                                                    // not used
-  1,                                                    // 1 digit - already have units
-  10,                                                   // 2 digits - tens is first
-  100,                                                  // 3 digits - hundreds is 1st
-  1000,                                                 // 4 digits - thousands is 1st
-  10000,                                                // 5 digits - ten thousands is 1st
-  100000,                                               // 6 digits - hundred thousands
-  1000000,                                              // millions
-  10000000,                                             // 10 millions
-  100000000,                                            // 100 millions
-  1000000000,                                           // 1000 millions
-  10000000000,                                          // 10000 millions
-  100000000000,                                         // 100000 millions
-  1000000000000,                                        // 1000000 millions
-  10000000000000                                        // 10000000 millions
+  0L,                                                    // not used
+  1L,                                                    // 1 digit - already have units
+  10L,                                                   // 2 digits - tens is first
+  100L,                                                  // 3 digits - hundreds is 1st
+  1000L,                                                 // 4 digits - thousands is 1st
+  10000L,                                                // 5 digits - ten thousands is 1st
+  100000L,                                               // 6 digits - hundred thousands
+  1000000L,                                              // millions
+  10000000L,                                             // 10 millions
+  100000000L,                                            // 100 millions
+  1000000000L,                                           // 1000 millions
+  10000000000L,                                          // 10000 millions
+  100000000000L,                                         // 100000 millions
+  1000000000000L,                                        // 1000000 millions
+  10000000000000L                                        // 10000000 millions
 };
 
 
@@ -53,7 +53,7 @@ long DivisorTable[] =
 // array of records. This must exactly match the enum ECATCommands in tiger.h
 // and the number of commands defined here must be correct
 // (not including the final eNoCommand)
-#define VNUMCATCMDS 9
+#define VNUMCATCMDS 7
 
 SCATCommands GCATCommands[VNUMCATCMDS] = 
 {
@@ -62,9 +62,7 @@ SCATCommands GCATCommands[VNUMCATCMDS] =
   {"ZZZE", eNum, 0, 999, 3, false},                       // encoder
   {"ZZZP", eNum, 0, 999, 3, false},                       // pushbutton
   {"ZZZI", eNum, 0, 999, 3, false},                       // indicator
-  {"ZZZS", eNum, 0, 999, 3, false},                       // s/w version
-  {"ZZZH", eNum, 0, 99, 2, false},                        // h/w version
-  {"ZZZT", eNum, 0, 99, 2, false},                        // product ID
+  {"ZZZS", eNum, 0, 9999999, 7, false},                       // s/w version
   {"ZZZX", eNum, 1, 999, 3, false}                        // encoder increments
 };
 
@@ -339,7 +337,7 @@ void MakeCATMessageNoParam(ECATCommands Cmd)
 //
 // make a CAT command with a numeric parameter
 //
-void MakeCATMessageNumeric(ECATCommands Cmd, int Param)
+void MakeCATMessageNumeric(ECATCommands Cmd, long Param)
 {
   byte CharCount;                  // character count to add
   unsigned long Divisor;           // initial divisor to convert to ascii

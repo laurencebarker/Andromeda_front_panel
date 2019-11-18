@@ -238,8 +238,6 @@ void ButtonPressed()
     ButtonCode = ReportCodeLookup[ScanCode];
     if (ButtonCode != 0)
       CATHandlePushbutton(ButtonCode, true, false); 
-    Serial.print(" Scan code=");
-    Serial.println(ScanCode);
   }
 }
 

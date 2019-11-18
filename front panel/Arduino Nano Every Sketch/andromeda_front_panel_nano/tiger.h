@@ -25,8 +25,6 @@ enum ECATCommands
   eZZZP,                          // pushbutton
   eZZZI,                          // indicator
   eZZZS,                          // s/w version
-  eZZZH,                          // h/w version
-  eZZZT,                          // product ID
   eZZZX,
   eNoCommand                      // this is an exception condition
 };
@@ -49,8 +47,8 @@ struct SCATCommands
 {
   char* CATString;                // eg "ZZAR"
   ERXParamType RXType;            // type of parameter expected on receive
-  int MinParamValue;              // eg "-999"
-  int MaxParamValue;              // eg "9999"
+  long MinParamValue;             // eg "-999"
+  long MaxParamValue;             // eg "9999"
   byte NumParams;                 // number of parameter bytes in a "set" command
   bool AlwaysSigned;              // true if the param version should always have a sign
 };
@@ -92,7 +90,7 @@ void MakeCATMessageNoParam(ECATCommands Cmd);
 //
 // make a CAT command with a numeric parameter
 //
-void MakeCATMessageNumeric(ECATCommands Cmd, int Param);
+void MakeCATMessageNumeric(ECATCommands Cmd, long Param);
 
 //
 // make a CAT command with a bool parameter
