@@ -62,7 +62,7 @@ SCATCommands GCATCommands[VNUMCATCMDS] =
   {"ZZZE", eNum, 0, 999, 3, false},                       // encoder
   {"ZZZP", eNum, 0, 999, 3, false},                       // pushbutton
   {"ZZZI", eNum, 0, 999, 3, false},                       // indicator
-  {"ZZZS", eNum, 0, 9999999, 7, false},                       // s/w version
+  {"ZZZS", eNum, 0, 9999999, 7, false},                   // s/w version
   {"ZZZX", eNum, 1, 999, 3, false}                        // encoder increments
 };
 
