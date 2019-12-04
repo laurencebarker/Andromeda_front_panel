@@ -133,15 +133,21 @@ void ScanParseSerial()
 //
 // we have input data available, so read it one char at a time and write to buffer
 // if we find a terminating semicolon, process the command
-//     
+// if we get a control character, abandon the line so far and start again
+//
       for(Cntr=0; Cntr < ReadChars; Cntr++)
       {
         Ch=CATSERIAL.read();
-        *GCATWritePtr++ = Ch;
-        if (Ch == ';')
+        if(isControl(Ch))
+          GCATWritePtr = GCATInputBuffer;                   // point to start of buffer
+        else
         {
-          *GCATWritePtr++ = 0;
-          ParseCATCmd();     
+          *GCATWritePtr++ = Ch;
+          if (Ch == ';')
+          {
+            *GCATWritePtr++ = 0;
+            ParseCATCmd();     
+          }
         }
       }
     }
