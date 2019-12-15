@@ -51,12 +51,12 @@ void setup()
 // configure I/O pins
 //
   ConfigIOPins();
+  PWMInitialise();
   GButtonInitialise();
 //
 // check that the flash is programmed, then load to RAM
 //  
   LoadSettingsFromEEprom();
-  PWMInitialise();
 
 //
 // initialise timer to give 2ms tick interrupt

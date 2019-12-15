@@ -16,7 +16,7 @@
 #include "types.h"
 #include <EEPROM.h>
 
-#define VEEINITPATTERN 0x6F                     // addr 0 set to this if configured
+#define VEEINITPATTERN 0x6E                     // addr 0 set to this if configured
 #define VBRIGHTNESSADDR 3                       // address in EEPROM for brightness setting
 
 byte GEncoderDivisor;                                // number of edge events per declared click
