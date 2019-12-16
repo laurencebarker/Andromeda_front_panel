@@ -196,7 +196,6 @@ void PWMUpdate(signed char Steps)
     Brightness = (int)GDisplayBrightness;
     Brightness += 8 * Steps;                                // get new value
     Brightness = constrain(Brightness, 40, 250);
-    Serial.println(GDisplayBrightness);
     GDisplayBrightness = Brightness;
     analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
     GBrightCounter = VBRIGHTNESSWRITEBACKCOUNT;             // delay till we write it to EEPROM
