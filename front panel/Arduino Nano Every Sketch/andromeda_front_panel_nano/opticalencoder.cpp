@@ -12,8 +12,10 @@
 /////////////////////////////////////////////////////////////////////////
 
 #include <arduino.h>
+#include "globalinclude.h"
 #include "opticalencoder.h"
 #include "iopins.h"
+
 
 #define VSWAPDIRECTION 1                    // if set, reverses direction
 
@@ -26,6 +28,7 @@ byte GDivisor;                              // number of edge events per declare
 
 
 #define VENCODERPINS 0b00110000             // bitmap to select the two encoder inputs
+#define VENCODERDIRPIN 0b00100000           // pin 5 gives direction
 
 
 //
@@ -63,28 +66,53 @@ void InitOpticalEncoder(void)
   pinMode(VPINVFOENCODERB, INPUT_PULLUP);               // VFO encoder
   delayMicroseconds(1000);                              // allow pins to settle
   GPinState = (PORTC.IN & VENCODERPINS) >> 2;           // bits 3:2
-  PORTC.PIN4CTRL = (PORT_PULLUPEN_bm | 0b1);            // pullup, both edges interrupt
-  PORTC.PIN5CTRL = (PORT_PULLUPEN_bm | 0b1);            // pullup, both edges interrupt
+//
+// now do interrupts differently depending on encoder type
+// for high res encoders, get an interrupt on one input rising edge
+#ifdef HIRESOPTICALENCODER
+  PORTC.PIN4CTRL = (PORT_PULLUPEN_bm | PORT_ISC_RISING_gc);               // pullup, rising edge interrupt
+#else
+// for low res (Broadcom type) encoders, get an interrupt on every edge
+  PORTC.PIN4CTRL = (PORT_PULLUPEN_bm | PORT_ISC_BOTHEDGES_gc);            // pullup, both edges interrupt
+  PORTC.PIN5CTRL = (PORT_PULLUPEN_bm | PORT_ISC_BOTHEDGES_gc);            // pullup, both edges interrupt
+#endif
 }
 
 
 
 //
 // VFO encoder pin interrupt handler
+// this works one of two ways depending on the attached encoder
+// for a broadcom type encoder - use both edges; find 4 bits from 2 bits current state and 2 bits previous state, and look up
+// for a high res encoder at just one interrupt per pulse - use int on one edge and use the sense of the other to set direction.
 //
 ISR(PORTC_PORT_vect)
 {
   byte InputValue;
   signed char Increment;
+
+#ifdef HIRESOPTICALENCODER                                // on interrupt - read the non interrupting pin to set direction
+  InputValue = PORTC.IN & VENCODERDIRPIN;
+  PORTC.INTFLAGS = 0b00010000;                            // clear interrupt flags
+  if(InputValue)
+    Increment = 1;
+  else
+    Increment = -1;
+#else                                               
   InputValue = (PORTC.IN & VENCODERPINS) >> 2;            // bits 3:2
   PORTC.INTFLAGS = 0b00110000;                            // clear interrupt flags
   GPinState = (GPinState >> 2) | InputValue;              // now have new bits in 3:2, old bits in 1:0
   Increment = StepsLookup[GPinState];
+#endif
+
+
 #ifdef VSWAPDIRECTION
   GDeltaCount -= Increment;
 #else
   GDeltaCount += Increment;
 #endif
+
+
 }
 
 

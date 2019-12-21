@@ -52,7 +52,7 @@ int16_t NoClickEncoder2::getValue(void)
 {
   int16_t val;
   
-  noInterrupts();
+//  noInterrupts();
   val = delta;
 
   if (steps == 2) delta = val & 1;
@@ -68,7 +68,7 @@ int16_t NoClickEncoder2::getValue(void)
     r =- 1;
   else if (val > 0) 
     r = 1;
-  interrupts();
+//  interrupts();
 
   return r;
 }
