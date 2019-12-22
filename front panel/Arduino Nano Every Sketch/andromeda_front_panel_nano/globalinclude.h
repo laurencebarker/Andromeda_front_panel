@@ -19,7 +19,7 @@
 //
 // hardware and software version: send back to console on request
 //
-#define SWVERSION 5
+#define SWVERSION 6
 #define HWVERSION 1
 
 //
