@@ -12,7 +12,7 @@
 
 
 //
-// encoder type: for ball bearing encoder, the paramter should be defined
+// encoder type: for ball bearing encoder, the parameter should be defined
 //
 #define HIRESOPTICALENCODER 1
 

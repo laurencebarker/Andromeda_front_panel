@@ -25,7 +25,7 @@
 //
 // global variables
 //
-bool GTickTriggered;                  // true if a 16ms tick has been triggered
+bool GTickTriggered;                  // true if a 2ms tick has been triggered
 
 void SetupTimerForInterrupt(int Milliseconds)
 {
@@ -36,6 +36,10 @@ void SetupTimerForInterrupt(int Milliseconds)
   TCB0.CCMP = Count; // Value to compare with. This is 1/5th of the tick rate, so 5 Hz
   TCB0.INTCTRL = TCB_CAPT_bm; // Enable the interrupt
   TCB0.CTRLA = TCB_CLKSEL_CLKTCA_gc | TCB_ENABLE_bm; // Use Timer A as clock, enable timer
+
+  // setup timer A for 8x faster than normal clock, so we get 8KHz PRF
+  // this will cause ny use of delay() millis() etc to be wrong
+  TCA0.SINGLE.CTRLA = (TCA_SINGLE_CLKSEL_DIV8_gc) | (TCA_SINGLE_ENABLE_bm);
 }
 
 
@@ -61,7 +65,7 @@ void setup()
 //
 // initialise timer to give 2ms tick interrupt
 //
-  SetupTimerForInterrupt(2);
+  SetupTimerForInterrupt(16);
 //
 // encoder
 //
@@ -79,9 +83,11 @@ void setup()
 //
 ISR(TCB0_INT_vect)
 {
+//  digitalWrite(12, HIGH);                 // debug to measure tick period
   GTickTriggered = true;
    // Clear interrupt flag
-   TCB0.INTFLAGS = TCB_CAPT_bm;
+  TCB0.INTFLAGS = TCB_CAPT_bm;
+//  digitalWrite(12, LOW);                  // debug to measure tick period
 }
 
 
