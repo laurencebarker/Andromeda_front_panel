@@ -55,7 +55,6 @@ void setup()
 // configure I/O pins
 //
   ConfigIOPins();
-  PWMInitialise();
   GButtonInitialise();
 //
 // check that the flash is programmed, then load to RAM
@@ -74,6 +73,10 @@ void setup()
 // CAT
 //
   InitCAT();
+//
+// display brightness
+//
+  PWMInitialise();
 }
 
 

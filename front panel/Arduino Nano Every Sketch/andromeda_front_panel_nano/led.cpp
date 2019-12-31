@@ -25,7 +25,7 @@ byte I2CLEDBits;                  // 3 bits data for LEDs, in bits 2:0 (init to 
 //
 byte GDisplayBrightness;                                // brightness value (0 to 255)
 int GBrightCounter;                                     // timer for EEPROM writeback
-int GCurrentBrightness;                                 // current brightness during initialisation
+//int GCurrentBrightness;                                 // current brightness during initialisation
 
 
 //
@@ -136,36 +136,36 @@ void PWMTick(void)
 //
 // now see if the initial brightness sequencer needs to be updated
 //
-  switch(GPWMState)
-  {
-    case eBegin:                          // PWM at maximum
-      if (--GPWMTimer == 0)
-      {
-        GPWMTimer = 1;                                          // decrement brightness next tick
-        GPWMState = eRamp;                                      // go to ramp state
-      }
-      break;
+//  switch(GPWMState)
+//  {
+//    case eBegin:                          // PWM at maximum
+//      if (--GPWMTimer == 0)
+//      {
+//        GPWMTimer = 1;                                          // decrement brightness next tick
+//        GPWMState = eRamp;                                      // go to ramp state
+//      }
+//      break;
       
-    case eRamp:                           // ramping down
-      if (--GPWMTimer == 0)
-      {
-        GCurrentBrightness -= 4;                                // and set next brightness
-        if (GCurrentBrightness <= GDisplayBrightness)           // if we have reached the required setting
-        {
-          analogWrite(VPINDISPLAYPWM, GDisplayBrightness);      // set final setting
-          GPWMState = eNormal;                                  // go to end state
-        }
-        else
-        {
-          GPWMTimer = VRAMPTICKS;                               // ramp time per tick
-          analogWrite(VPINDISPLAYPWM, GCurrentBrightness);
-        }
-      }
-      break;
+//    case eRamp:                           // ramping down
+//      if (--GPWMTimer == 0)
+//      {
+//        GCurrentBrightness -= 4;                                // and set next brightness
+//        if (GCurrentBrightness <= GDisplayBrightness)           // if we have reached the required setting
+//        {
+//          analogWrite(VPINDISPLAYPWM, GDisplayBrightness);      // set final setting
+//          GPWMState = eNormal;                                  // go to end state
+//        }
+//        else
+//        {
+//          GPWMTimer = VRAMPTICKS;                               // ramp time per tick
+//          analogWrite(VPINDISPLAYPWM, GCurrentBrightness);
+//        }
+//      }
+//      break;
       
-    case eNormal:                                               // brightness settled - nothing to do
-      break;
-  }
+//    case eNormal:                                               // brightness settled - nothing to do
+//      break;
+//  }
 }
 
 
@@ -175,10 +175,10 @@ void PWMTick(void)
 //
 void PWMInitialise(void)
 {
-  GCurrentBrightness = 255;
-  analogWrite(VPINDISPLAYPWM, GCurrentBrightness);
-//  analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
-  GPWMTimer = VFULLBRIGHTNESSCOUNT;       // ticks at full brightness
+//  GCurrentBrightness = 255;
+//  analogWrite(VPINDISPLAYPWM, GCurrentBrightness);
+  analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
+//  GPWMTimer = VFULLBRIGHTNESSCOUNT;       // ticks at full brightness
 }
 
 
