@@ -27,11 +27,15 @@
 //
 bool GTickTriggered;                  // true if a 2ms tick has been triggered
 
+
+//
+// counter clocked by CK/8 (0.5us)
+// note this is faster than I've used in other sketches because timer 8 set to run 8x faster
 void SetupTimerForInterrupt(int Milliseconds)
 {
   int Count;
 
-  Count = Milliseconds * 250;
+  Count = Milliseconds * 2000;
   TCB0.CTRLB = TCB_CNTMODE_INT_gc; // Use timer compare mode  
   TCB0.CCMP = Count; // Value to compare with. This is 1/5th of the tick rate, so 5 Hz
   TCB0.INTCTRL = TCB_CAPT_bm; // Enable the interrupt
@@ -64,7 +68,7 @@ void setup()
 //
 // initialise timer to give 2ms tick interrupt
 //
-  SetupTimerForInterrupt(16);
+  SetupTimerForInterrupt(2);
 //
 // encoder
 //

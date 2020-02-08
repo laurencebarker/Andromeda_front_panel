@@ -48,6 +48,7 @@ EScanStates GScanState;
 byte GScanColumn;                   // scanned column number, 0...4
 byte GFoundRow;                     // row where a bit detected
 byte GDebounceTickCounter;          // delay counter (units of 2ms)
+unsigned int GLongPressCounter;     // counter for a long press
 
 
 //
@@ -226,7 +227,7 @@ byte GetScanCode()
 // called when a button is pressed
 // the parameter is the button matrix number (0..N-1)
 //
-void ButtonPressed()
+void ButtonPressed(bool IsLongPress)
 {
   
   byte ButtonCode;             // message report code
@@ -237,7 +238,7 @@ void ButtonPressed()
   {
     ButtonCode = ReportCodeLookup[ScanCode];
     if (ButtonCode != 0)
-      CATHandlePushbutton(ButtonCode, true, false); 
+      CATHandlePushbutton(ButtonCode, true, IsLongPress); 
   }
 }
 
@@ -263,6 +264,7 @@ void ButtonReleased()
 
 
 #define VDEBOUNCETICKS 10
+#define VLONGPRESSTHRESHOLD 1000             // 2 seconds
 
 //
 // Tick
@@ -307,7 +309,8 @@ void ButtonTick(void)
         if (Row == GFoundRow)               // same button pressed
         {
           GScanState = eButtonPressed;
-          ButtonPressed();                  // action the button press
+          ButtonPressed(false);                  // action the button press as a short press
+          GLongPressCounter = VLONGPRESSTHRESHOLD;          // initialise count
         }
         else                                // single button pressed
         {
@@ -328,6 +331,12 @@ void ButtonTick(void)
           GDebounceTickCounter = VDEBOUNCETICKS;
           ButtonReleased();
         }
+        else                                // same button, so see if a long press
+        {
+          if(GLongPressCounter != 0)        // if we decrement the long press timeout to zero
+            if(--GLongPressCounter == 0)    // it will be a long press
+              ButtonPressed(true);          // action the button press as a long press
+        }
         break;
       
       case eWaitReleased:                   // release state from a single press - debounce
@@ -344,7 +353,7 @@ void ButtonTick(void)
         }
         break;
       
-      case eMultiPressed:                   // more thna one pressed - wait until released
+      case eMultiPressed:                   // more than one pressed - wait until released
         if (Row == 0)                       // 1st detect of button released
         {
           GScanState = eWaitMultiReleased;
