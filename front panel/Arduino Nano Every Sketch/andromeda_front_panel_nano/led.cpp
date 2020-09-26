@@ -188,14 +188,17 @@ void PWMInitialise(void)
 // called if the correct encoder is turned; check the right button pressed too!
 // the lower limit for brightness is to avoid the display LED driver going into EasyScale mode
 //
+// note PWM now driven by a FET, which inverts the PWM signal. To get max brightness now need minimum PWM output.
+// note there is a limit on min brightness, to make sure the display driver doesn't enter "EasyScale" mode.
+//
 void PWMUpdate(signed char Steps)
 {
   int Brightness;
   if(IsPWMButtonPressed())
   {
     Brightness = (int)GDisplayBrightness;
-    Brightness += 8 * Steps;                                // get new value
-    Brightness = constrain(Brightness, 40, 250);
+    Brightness -= 8 * Steps;                                // get new value; smaller is brighter
+    Brightness = constrain(Brightness, 10, 210);
     GDisplayBrightness = Brightness;
     analogWrite(VPINDISPLAYPWM, GDisplayBrightness);
     GBrightCounter = VBRIGHTNESSWRITEBACKCOUNT;             // delay till we write it to EEPROM
