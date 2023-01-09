@@ -2,41 +2,13 @@ This is the repository for the Andromeda front panel
 
 It includes an Arduino sketch for the Andromeda front panel controller. The newest code and hardware is written for an Arduino Nano Every board.
 
-There are two sketches here:
-1. The new, intended front panel controller
-2. an interim one, based on Odin code using CAT commands
+There are three sketches here:
+1. The newest sketch, using an Arduino Nano Every board.
+2. The new, intended front panel controller, using and Arduino due board
+3. an interim one, based on Odin code using CAT commands
 
 
-
-Arduino libraries install into a folder that has been created by your Arduino IDE. Usually that folder is in "documents\arduino\libraries".
-
-To build this code you will need to install the following libraries into your documents\arduino\libraries folder:
-
-DueFlashStorage
-DueTimer
-Encoder
-
-
-To install the libraries
-========================
-To add more libraries, you need to add a correctly names folder to that location. 
-
-DueFlashStorage: 
-1. download from https://github.com/sebnil/DueFlashStorage
-2. unzip into a folder "DueFlashStorage" in your documents\arduino\libraries folder
-3. (if you end up with a folder DueFlashStorage-master, rename it to remove the "-master")
-
-Encoder: 
-1. open the Arduino IDE
-2. click "Sketch | Include Library | Manage libraries..." on the menu
-3. in the library manager type "encoder" where it sayds "filter your search" and hit enter
-4. find "encoder" by Paul Stoffregen and click "install"
-
-Due Timer:
-1. open the Arduino IDE
-2. click "Sketch | Include Library | Manage libraries..." on the menu
-3. in the library manager type "due timer" where it sayds "filter your search" and hit enter
-4. find "DueTimer" by Ivan Seidel and click "install"
+There are instructions in the documentation for building the older versions. For the newesT, Nano Every Arduino:
 
 
 
@@ -53,12 +25,20 @@ Downloading the Andromeda software repository
 
 
 
+To add support for the Nano Every
+=================================
+1. open board manager on the IDE
+2. select and install “Arduino mega AVR boards”
+3. Select tools > boards > Arduino megaAVR boards > Arduino Nano Every
+4. select tools -> registers emulation -> none (ATMEGA4809)
+
+
+
 To build the Arduino code
 =========================
 In the Arduino IDE:
-1. Click "board" on the "tools" menu and select "Arduino Due (programming Port)"
-2. Click "Verify/compile" on the "sketch" menu to compile
-3. (this will take around a minute and should result in a message saying the % of program space used)
+1. Click "Verify/compile" on the "sketch" menu to compile
+2. (this will take around a minute and should result in a message saying the % of program space used)
 
 
 To upload to your arduino
